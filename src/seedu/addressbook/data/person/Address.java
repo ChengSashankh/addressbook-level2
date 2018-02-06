@@ -31,16 +31,18 @@ public class Address {
      */
     public Address(String address, boolean isPrivate) throws IllegalValueException {
         String trimmedAddress = address.trim();
+        int numberOfParts;
         this.value = new String(trimmedAddress);
         this.isPrivate = isPrivate;
         if (!isValidAddress(trimmedAddress)) {
             throw new IllegalValueException(MESSAGE_ADDRESS_CONSTRAINTS);
         }
         String[] addressInParts = splitAddressIntoParts(trimmedAddress);
-        block = new Block(getBlockFromAddress(addressInParts));
-        street = new Street(getStreetFromAddress(addressInParts));
-        unit = new Unit(getUnitFromAddress(addressInParts));
-        postalCode = new PostalCode(getPostalCodeFromAddress(addressInParts));
+        numberOfParts = addressInParts.length;
+        block = new Block(getBlockFromAddress(addressInParts, numberOfParts));
+        street = new Street(getStreetFromAddress(addressInParts, numberOfParts));
+        unit = new Unit(getUnitFromAddress(addressInParts, numberOfParts));
+        postalCode = new PostalCode(getPostalCodeFromAddress(addressInParts, numberOfParts));
     }
 
     /**
@@ -48,8 +50,11 @@ public class Address {
      *
      * @param addressInParts
      */
-    private String getPostalCodeFromAddress(String[] addressInParts){
-        return addressInParts[POSTAL_CODE_ADDRESS_INDEX];
+    private String getPostalCodeFromAddress(String[] addressInParts, int numberOfParts){
+        if(POSTAL_CODE_ADDRESS_INDEX < numberOfParts)
+            return addressInParts[POSTAL_CODE_ADDRESS_INDEX];
+        else
+            return " ";
     }
 
     /**
@@ -57,8 +62,11 @@ public class Address {
      *
      * @param addressInParts
      */
-    private String getStreetFromAddress(String[] addressInParts){
-        return addressInParts[STREET_ADDRESS_INDEX];
+    private String getStreetFromAddress(String[] addressInParts, int numberOfParts){
+        if(STREET_ADDRESS_INDEX < numberOfParts)
+            return addressInParts[STREET_ADDRESS_INDEX];
+        else
+            return " ";
     }
 
     /**
@@ -66,8 +74,11 @@ public class Address {
      *
      * @param addressInParts
      */
-    private String getUnitFromAddress(String[] addressInParts){
-        return addressInParts[UNIT_ADDRESS_INDEX];
+    private String getUnitFromAddress(String[] addressInParts, int numberOfParts){
+        if(UNIT_ADDRESS_INDEX < numberOfParts)
+            return addressInParts[UNIT_ADDRESS_INDEX];
+        else
+            return " ";
     }
 
     /**
@@ -75,8 +86,11 @@ public class Address {
      *
      * @param addressInParts
      */
-    private String getBlockFromAddress(String[] addressInParts){
-        return addressInParts[BLOCK_ADDRESS_INDEX];
+    private String getBlockFromAddress(String[] addressInParts, int numberOfParts){
+        if(BLOCK_ADDRESS_INDEX < numberOfParts)
+            return addressInParts[BLOCK_ADDRESS_INDEX];
+        else
+            return " ";
     }
 
     /**
